@@ -60,7 +60,7 @@
 
           var value = $point.attr('ct:value');
           if (options.currency) {
-            value = options.currency + value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
           }
           tooltipText += value;
 
