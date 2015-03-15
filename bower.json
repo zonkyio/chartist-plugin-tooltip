@@ -1,6 +1,6 @@
 {
   "name": "chartist-plugin-tooltip",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": [
     "./dist/chartist-plugin-tooltip.min.js"
   ],

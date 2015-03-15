@@ -27,7 +27,10 @@
       var tooltipSelector = '.ct-point';
       if (chart instanceof Chartist.Bar) {
         tooltipSelector = '.ct-bar';
+      } else if (chart instanceof Chartist.Pie) {
+        tooltipSelector = '.ct-slice';
       }
+
       var $chart = $(chart.container);
       var $toolTip = $chart
       .append('<div class="tooltip"></div>')

@@ -43,7 +43,10 @@
         var tooltipSelector = '.ct-point';
         if (chart instanceof Chartist.Bar) {
           tooltipSelector = '.ct-bar';
+        } else if (chart instanceof Chartist.Pie) {
+          tooltipSelector = '.ct-donut';
         }
+
         var $chart = $(chart.container);
         var $toolTip = $chart
         .append('<div class="tooltip"></div>')
