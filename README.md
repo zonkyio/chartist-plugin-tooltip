@@ -7,7 +7,10 @@ Please visit http://gionkunz.github.io/chartist-js/plugins.html for more informa
 ## Available options and their defaults
 
 ```javascript
-//None at this point
+var defaultOptions = {
+  currency: null //accepts '£', '$', '€', etc.
+  //e.g. 4000 => €4,000
+};
 ```
 
 ## Sample usage in Chartist.js
