@@ -23,6 +23,7 @@
     'use strict';
 
     var defaultOptions = {
+      currency: null
       // showTooltips: true,
       // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
       // labelClass: 'ct-label',
@@ -36,11 +37,11 @@
     Chartist.plugins = Chartist.plugins || {};
     Chartist.plugins.tooltip = function(options) {
 
-      // options = Chartist.extend({}, defaultOptions, options);
+      options = Chartist.extend({}, defaultOptions, options);
 
       return function tooltip(chart) {
         var tooltipSelector = '.ct-point';
-        if(chart instanceof Chartist.Bar) {
+        if (chart instanceof Chartist.Bar) {
           tooltipSelector = '.ct-bar';
         }
         var $chart = $(chart.container);
@@ -57,7 +58,11 @@
             tooltipText += $point.attr('ct:meta') + '<br>';
           }
 
-          tooltipText += $point.attr('ct:value')
+          var value = $point.attr('ct:value');
+          if (options.currency) {
+            value = options.currency + value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+          }
+          tooltipText += value;
 
           $toolTip.html(tooltipText).show();
         });
