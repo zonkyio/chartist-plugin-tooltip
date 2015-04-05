@@ -38,7 +38,7 @@
       .hide();
 
       $chart.on('mouseenter', tooltipSelector, function() {
-        var $point = Ember.$(this);
+        var $point = $(this);
         var tooltipText = '';
 
         if ($point.attr('ct:meta')) {
