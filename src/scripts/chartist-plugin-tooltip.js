@@ -47,9 +47,9 @@
           // For Pie Charts also take the labels into account
           // Could add support for more charts here as well!
           if (chart instanceof Chartist.Pie) {
-            var label = $('.ct-slice.ct-donut:first').next('.ct-label');
+            var label = $point.next('.ct-label');
             if (label.length > 0) {
-              tooltipText += label.text + '<br>';
+              tooltipText += label.text() + '<br>';
             }
           }
         }
