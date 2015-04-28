@@ -55,7 +55,7 @@
         }
 
         var value = $point.attr('ct:value');
-        if (options.currency !== undefined && options.currency) {
+        if (!$.isEmptyObject(options.currency)) {
           value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
         }
         tooltipText += value;
