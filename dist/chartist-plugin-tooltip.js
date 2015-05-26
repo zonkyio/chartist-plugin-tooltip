@@ -23,7 +23,7 @@
     'use strict';
 
     var defaultOptions = {
-      currency: null
+      currency: undefined
       // showTooltips: true,
       // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
       // labelClass: 'ct-label',
@@ -49,8 +49,8 @@
 
         var $chart = $(chart.container);
         var $toolTip = $chart
-        .append('<div class="tooltip"></div>')
-        .find('.tooltip')
+        .append('<div class="chartist-tooltip"></div>')
+        .find('.chartist-tooltip')
         .hide();
 
         $chart.on('mouseenter', tooltipSelector, function() {
@@ -71,7 +71,7 @@
           }
 
           var value = $point.attr('ct:value');
-          if (options.currency) {
+          if (options.currency !== undefined && options.currency) {
             value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
           }
           tooltipText += value;
