@@ -1,4 +1,4 @@
-Changelog
+# Chartist Plugin Tooltip Changelog
 
 ### master
 
