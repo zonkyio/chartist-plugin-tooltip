@@ -1,4 +1,4 @@
-# SANE Stack Changelog
+Changelog
 
 ### master
 
