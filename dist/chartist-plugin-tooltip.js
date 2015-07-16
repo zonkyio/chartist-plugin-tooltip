@@ -57,24 +57,28 @@
           var $point = $(this);
           var tooltipText = '';
 
-          if ($point.attr('ct:meta')) {
-            tooltipText += $point.attr('ct:meta') + '<br>';
+          if (options.tooltipFnc) {
+            tooltipText = options.tooltipFnc($point.attr('ct:meta') || '', $point.attr('ct:value'));
           } else {
-            // For Pie Charts also take the labels into account
-            // Could add support for more charts here as well!
-            if (chart instanceof Chartist.Pie) {
-              var label = $point.next('.ct-label');
-              if (label.length > 0) {
-                tooltipText += label.text() + '<br>';
+            if ($point.attr('ct:meta')) {
+              tooltipText += $point.attr('ct:meta') + '<br>';
+            } else {
+              // For Pie Charts also take the labels into account
+              // Could add support for more charts here as well!
+              if (chart instanceof Chartist.Pie) {
+                var label = $point.next('.ct-label');
+                if (label.length > 0) {
+                  tooltipText += label.text() + '<br>';
+                }
               }
             }
-          }
 
-          var value = $point.attr('ct:value');
-          if (options.currency !== undefined && options.currency) {
-            value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+            var value = $point.attr('ct:value');
+            if (!$.isEmptyObject(options.currency)) {
+              value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+            }
+            tooltipText += value;
           }
-          tooltipText += value;
 
           $toolTip.html(tooltipText).show();
         });
@@ -84,9 +88,12 @@
         });
 
         $chart.on('mousemove', function(event) {
+          // For some reasons, on FF, we can't rely on event.offsetX and event.offsetY,
+          // that's why we prioritize event.originalEvent.layerX and event.originalEvent.layerY
+          // see https://github.com/gionkunz/chartist-js/issues/381
           $toolTip.css({
-            left: (event.offsetX || event.originalEvent.layerX) - $toolTip.width() / 2 - 10,
-            top: (event.offsetY || event.originalEvent.layerY) - $toolTip.height() - 40
+            left: (event.originalEvent.layerX || event.offsetX) - $toolTip.width() / 2 - 10,
+            top: (event.originalEvent.layerY || event.offsetY) - $toolTip.height() - 40
           });
         });
       }
