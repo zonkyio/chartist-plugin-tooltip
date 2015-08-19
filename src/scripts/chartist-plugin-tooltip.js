@@ -28,7 +28,12 @@
       if (chart instanceof Chartist.Bar) {
         tooltipSelector = '.ct-bar';
       } else if (chart instanceof Chartist.Pie) {
-        tooltipSelector = '.ct-slice';
+        // Added support for donut graph
+        if (chart.options.donut){
+          tooltipSelector = '.ct-slice-donut';
+        }else{
+          tooltipSelector = '.ct-slice-pie';
+        }
       }
 
       var $chart = $(chart.container);
