@@ -19,88 +19,131 @@
    *
    */
   /* global Chartist */
-  (function(window, document, Chartist) {
-    'use strict';
+  (function (window, document, Chartist) {
+      'use strict';
 
-    var defaultOptions = {
-      currency: undefined
-      // showTooltips: true,
-      // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
-      // labelClass: 'ct-label',
-      // labelOffset: {
-      //   x: 0,
-      //   y: -10
-      // },
-      // textAnchor: 'middle'
-    };
-
-    Chartist.plugins = Chartist.plugins || {};
-    Chartist.plugins.tooltip = function(options) {
-
-      options = Chartist.extend({}, defaultOptions, options);
-
-      return function tooltip(chart) {
-        var tooltipSelector = '.ct-point';
-        if (chart instanceof Chartist.Bar) {
-          tooltipSelector = '.ct-bar';
-        } else if (chart instanceof Chartist.Pie) {
-          tooltipSelector = '.ct-slice';
-        }
-
-        var $chart = $(chart.container);
-        var $toolTip = $chart
-        .append('<div class="chartist-tooltip"></div>')
-        .find('.chartist-tooltip')
-        .hide();
-
-        $chart.on('mouseenter', tooltipSelector, function() {
-          var $point = $(this);
-          var tooltipText = '';
-
-          if (options.tooltipFnc) {
-            tooltipText = options.tooltipFnc($point.attr('ct:meta') || '', $point.attr('ct:value'));
-          } else {
-            if ($point.attr('ct:meta')) {
-              tooltipText += $point.attr('ct:meta') + '<br>';
-            } else {
-              // For Pie Charts also take the labels into account
-              // Could add support for more charts here as well!
-              if (chart instanceof Chartist.Pie) {
-                var label = $point.next('.ct-label');
-                if (label.length > 0) {
-                  tooltipText += label.text() + '<br>';
-                }
-              }
-            }
-
-            var value = $point.attr('ct:value');
-            if (!$.isEmptyObject(options.currency)) {
-              value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
-            }
-            tooltipText += value;
+      var defaultOptions = {
+          currency: undefined,
+          tooltipOffset: {
+              x: 0,
+              y: -20
           }
+          // tooltipFnc
+          // showTooltips: true,
+          // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
+          // labelClass: 'ct-label',
+          // labelOffset: {
+          //   x: 0,
+          //   y: -10
+          // },
+          // textAnchor: 'middle'
+      };
 
-          $toolTip.html(tooltipText).show();
-        });
+      Chartist.plugins = Chartist.plugins || {};
+      Chartist.plugins.tooltip = function (options) {
 
-        $chart.on('mouseleave', tooltipSelector, function() {
-          $toolTip.hide();
-        });
+          options = Chartist.extend({}, defaultOptions, options);
 
-        $chart.on('mousemove', function(event) {
-          // For some reasons, on FF, we can't rely on event.offsetX and event.offsetY,
-          // that's why we prioritize event.originalEvent.layerX and event.originalEvent.layerY
-          // see https://github.com/gionkunz/chartist-js/issues/381
-          $toolTip.css({
-            left: (event.originalEvent.layerX || event.offsetX) - $toolTip.width() / 2 - 10,
-            top: (event.originalEvent.layerY || event.offsetY) - $toolTip.height() - 40
-          });
-        });
+          return function tooltip(chart) {
+              var tooltipSelector = 'ct-point';
+              if (chart instanceof Chartist.Bar) {
+                  tooltipSelector = 'ct-bar';
+              } else if (chart instanceof Chartist.Pie) {
+                  // Added support for donut graph
+                  if (chart.options.donut) {
+                      tooltipSelector = 'ct-slice-donut';
+                  } else {
+                      tooltipSelector = 'ct-slice-pie';
+                  }
+              }
+
+              var $chart = chart.container;
+
+              var $toolTip = document.createElement('div');
+              $toolTip.className = 'chartist-tooltip';
+              $chart.appendChild($toolTip);
+
+              hide($toolTip);
+
+              function on(event, selector, callback) {
+                  $chart.addEventListener(event, function (e) {
+                      if (!selector || hasClass(e.target, selector))
+                          callback(e);
+                  });
+              }
+
+              on('mouseover', tooltipSelector, function (event) {
+                  var $point = event.target;
+                  var tooltipText = '';
+
+                  var meta = $point.getAttribute('ct:meta') || '';
+                  var value = $point.getAttribute('ct:value');
+
+                  if (options.tooltipFnc) {
+                      tooltipText = options.tooltipFnc(meta, value);
+                  } else {
+                      if (meta) {
+                          tooltipText += meta + '<br>';
+                      } else {
+                          // For Pie Charts also take the labels into account
+                          // Could add support for more charts here as well!
+                          if (chart instanceof Chartist.Pie) {
+                              var label = next($point, 'ct-label');
+                              if (label.length > 0) {
+                                  tooltipText += text(label) + '<br>';
+                              }
+                          }
+                      }
+
+                      if (options.currency) {
+                          value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+                      }
+                      tooltipText += value;
+                  }
+
+                  $toolTip.innerHTML = tooltipText;
+                  show($toolTip);
+              });
+
+              on('mouseout', tooltipSelector, function () {
+                  hide($toolTip);
+              });
+
+              on('mousemove', null, function (event) {
+                  // For some reasons, on FF, we can't rely on event.offsetX and event.offsetY,
+                  // that's why we prioritize event.layerX and event.layerY
+                  // see https://github.com/gionkunz/chartist-js/issues/381
+                  $toolTip.style.top = (event.layerY || event.offsetY) - $toolTip.offsetHeight + options.tooltipOffset.y  + 'px';
+                  $toolTip.style.left = (event.layerX || event.offsetX) - $toolTip.offsetWidth / 2 + options.tooltipOffset.x + 'px';
+
+              });
+          }
+      };
+
+      function show(element) {
+          element.style.display = 'block';
       }
-    };
 
-  }(window, document, Chartist));
+      function hide(element) {
+          element.style.display = 'none';
+      }
 
+      function hasClass(element, className) {
+          return (' ' + element.getAttribute('class') + ' ').indexOf(' ' + className + ' ') > -1;
+      }
+
+      function next(element, className) {
+          do {
+              element = element.nextSibling;
+          } while (element && !hasClass(element, className));
+          return element;
+      }
+
+      function text(element) {
+          return element.innerText || element.textContent;
+      }
+
+  } (window, document, Chartist));
   return Chartist.plugins.tooltips;
 
 }));
