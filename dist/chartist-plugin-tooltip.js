@@ -59,9 +59,12 @@
 
               var $chart = chart.container;
 
-              var $toolTip = document.createElement('div');
-              $toolTip.className = 'chartist-tooltip';
-              $chart.appendChild($toolTip);
+              var $toolTip = $chart.querySelector('.chartist-tooltip');
+              if (!$toolTip) {
+                  $toolTip = document.createElement('div');
+                  $toolTip.className = 'chartist-tooltip';
+                  $chart.appendChild($toolTip);
+              }
 
               hide($toolTip);
 

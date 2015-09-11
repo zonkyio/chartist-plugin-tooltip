@@ -40,7 +40,14 @@ describe('ctPointLabels', function () {
   it('should append tooltip', function() {
     expect(getTooltip()).toBeDefined();
   });
-
+  
+  it('should not append tooltip twice', function() {
+    expect(getTooltip()).toBeDefined();
+    window.Chartist.plugins.tooltip()(chart);
+    var all = chart.container.querySelectorAll('div.chartist-tooltip');
+    expect(all.length).toBe(1);
+  });
+  
   it('should hide tooltip', function() {
     expect(getTooltip().style.display).toBe('none');    
   });
