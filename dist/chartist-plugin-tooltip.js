@@ -1,8 +1,8 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define([], function () {
-      return (root.returnExportsGlobal = factory());
+    define([], function (Chartist) {
+      return (root.returnExportsGlobal = factory(Chartist));
     });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
@@ -12,7 +12,7 @@
   } else {
     root['Chartist.plugins.tooltips'] = factory();
   }
-}(this, function () {
+}(this, function (Chartist) {
 
   /**
    * Chartist.js plugin to display a data label on top of the points in a line chart.
