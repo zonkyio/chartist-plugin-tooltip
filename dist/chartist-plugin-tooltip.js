@@ -28,7 +28,6 @@
               x: 0,
               y: -20
           }
-          // tooltipFnc
           // showTooltips: true,
           // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
           // labelClass: 'ct-label',
@@ -58,13 +57,14 @@
               }
 
               var $chart = chart.container;
-
               var $toolTip = $chart.querySelector('.chartist-tooltip');
               if (!$toolTip) {
                   $toolTip = document.createElement('div');
                   $toolTip.className = 'chartist-tooltip';
                   $chart.appendChild($toolTip);
               }
+              var height = $toolTip.offsetHeight;
+              var width = $toolTip.offsetWidth;
 
               hide($toolTip);
 
@@ -105,7 +105,12 @@
                   }
 
                   $toolTip.innerHTML = tooltipText;
+                  setPosition(event);
                   show($toolTip);
+
+                  // Remember height and width to avoid wrong position in IE
+                  height = $toolTip.offsetHeight;
+                  width = $toolTip.offsetWidth;
               });
 
               on('mouseout', tooltipSelector, function () {
@@ -113,13 +118,18 @@
               });
 
               on('mousemove', null, function (event) {
+                  setPosition(event);
+              });
+
+              function setPosition(event) {
                   // For some reasons, on FF, we can't rely on event.offsetX and event.offsetY,
                   // that's why we prioritize event.layerX and event.layerY
                   // see https://github.com/gionkunz/chartist-js/issues/381
-                  $toolTip.style.top = (event.layerY || event.offsetY) - $toolTip.offsetHeight + options.tooltipOffset.y  + 'px';
-                  $toolTip.style.left = (event.layerX || event.offsetX) - $toolTip.offsetWidth / 2 + options.tooltipOffset.x + 'px';
-
-              });
+                  height = height || $toolTip.offsetHeight;
+                  width = width || $toolTip.offsetWidth;
+                  $toolTip.style.top = (event.layerY || event.offsetY) - height + options.tooltipOffset.y + 'px';
+                  $toolTip.style.left = (event.layerX || event.offsetX) - width / 2 + options.tooltipOffset.x + 'px';
+              }
           }
       };
 
@@ -147,6 +157,7 @@
       }
 
   } (window, document, Chartist));
+
   return Chartist.plugins.tooltips;
 
 }));
