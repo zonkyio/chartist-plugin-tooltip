@@ -16,7 +16,10 @@ module.exports = function (grunt) {
       dest: '<%= pkg.config.dist %>/<%= pkg.name %>.js',
       objectToExport: 'Chartist.plugins.tooltips',
       deps: {
-        'default': ['Chartist']
+        default: ['Chartist'],
+        amd: ['chartist'],
+        cjs: ['chartist'],
+        global: ['Chartist']
       },
       indent: '  '
     }
