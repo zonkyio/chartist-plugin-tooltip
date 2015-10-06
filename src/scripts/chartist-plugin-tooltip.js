@@ -63,8 +63,8 @@
         var $point = event.target;
         var tooltipText = '';
 
-        var meta = $point.getAttribute('ct:meta') || '';
-        var value = $point.getAttribute('ct:value');
+        var meta = ('<span class="chartist-tooltip-meta">'+$point.getAttribute('ct:meta')+'</span>') || '';
+        var value = '<span class="chartist-tooltip-value">'+$point.getAttribute('ct:value')+'</span>';
 
         if (options.tooltipFnc) {
           tooltipText = options.tooltipFnc(meta, value);
