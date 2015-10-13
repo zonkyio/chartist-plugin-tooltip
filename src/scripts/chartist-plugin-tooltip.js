@@ -12,7 +12,8 @@
       x: 0,
       y: -20
     },
-    appendToBody: false
+    appendToBody: false,
+    class: undefined
     // showTooltips: true,
     // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
     // labelClass: 'ct-label',
@@ -45,7 +46,7 @@
       var $toolTip = $chart.querySelector('.chartist-tooltip');
       if (!$toolTip) {
         $toolTip = document.createElement('div');
-        $toolTip.className = 'chartist-tooltip';
+        $toolTip.className = (!options.class) ? 'chartist-tooltip' : 'chartist-tooltip ' + options.class;
         if (!options.appendToBody) {
           $chart.appendChild($toolTip);
         } else {
