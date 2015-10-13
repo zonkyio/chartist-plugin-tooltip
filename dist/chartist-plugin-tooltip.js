@@ -84,12 +84,16 @@
           var $point = event.target;
           var tooltipText = '';
 
-          var meta = ('<span class="chartist-tooltip-meta">'+$point.getAttribute('ct:meta')+'</span>') || '';
-          var value = '<span class="chartist-tooltip-value">'+$point.getAttribute('ct:value')+'</span>';
+          var meta = $point.getAttribute('ct:meta') || '';
+          var value = $point.getAttribute('ct:value');
 
           if (options.tooltipFnc) {
             tooltipText = options.tooltipFnc(meta, value);
           } else {
+
+            meta = '<span class="chartist-tooltip-meta">' + meta + '</span>';
+            value = '<span class="chartist-tooltip-value">' + value + '</span>';
+
             if (meta) {
               tooltipText += meta + '<br>';
             } else {
