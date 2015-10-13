@@ -53,18 +53,18 @@ describe('ctPointLabels', function () {
   });
 
   it('should hide tooltip', function() {
-    expect(getTooltip().style.display).toBe('none');
+    expect(hasClass(getTooltip(), 'tooltip-show')).toBe(false);
   });
 
   it('should show tooltip on mouse enter', function() {
     listeners['mouseover'](event);
-    expect(getTooltip().style.display).toBe('block');
+    expect(hasClass(getTooltip(), 'tooltip-show')).toBe(true);
   });
 
   it('should hide tooltip on mouse leave', function() {
     listeners['mouseover'](event);
     listeners['mouseout'](event);
-    expect(getTooltip().style.display).toBe('none');
+    expect(hasClass(getTooltip(), 'tooltip-show')).toBe(false);
   });
 
   it('should set tooltip text', function() {

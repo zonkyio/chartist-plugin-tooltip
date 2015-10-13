@@ -132,11 +132,11 @@
   };
 
   function show(element) {
-    element.style.display = 'block';
+    element.classList.add('tooltip-show');
   }
 
   function hide(element) {
-    element.style.display = 'none';
+    element.classList.remove('tooltip-show');
   }
 
   function hasClass(element, className) {

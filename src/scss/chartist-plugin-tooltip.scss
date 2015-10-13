@@ -3,6 +3,7 @@ $chart-tooltip-color: #453D3F;
 .chartist-tooltip {
   position: absolute;
   display: inline-block;
+  opacity: 0;
   min-width: 5em;
   padding: .5em;
   background: $chart-tooltip-bg;
@@ -12,6 +13,10 @@ $chart-tooltip-color: #453D3F;
   text-align: center;
   pointer-events: none;
   z-index: 1;
+  -webkit-transition: opacity .2s linear;
+  -moz-transition: opacity .2s linear;
+  -o-transition: opacity .2s linear;
+  transition: opacity .2s linear;
   &:before {
     content: "";
     position: absolute;
@@ -22,5 +27,8 @@ $chart-tooltip-color: #453D3F;
     margin-left: -15px;
     border: 15px solid transparent;
     border-top-color: $chart-tooltip-bg;
+  }
+  &.tooltip-show {
+    opacity: 1;
   }
 }
