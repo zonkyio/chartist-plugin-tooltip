@@ -11,7 +11,8 @@
     tooltipOffset: {
       x: 0,
       y: -20
-    }
+    },
+    appendToBody: false
     // showTooltips: true,
     // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
     // labelClass: 'ct-label',
@@ -24,7 +25,7 @@
 
   Chartist.plugins = Chartist.plugins || {};
   Chartist.plugins.tooltip = function (options) {
-
+    console.log(options);
     options = Chartist.extend({}, defaultOptions, options);
 
     return function tooltip(chart) {
@@ -45,7 +46,11 @@
       if (!$toolTip) {
         $toolTip = document.createElement('div');
         $toolTip.className = 'chartist-tooltip';
-        $chart.appendChild($toolTip);
+        if (!options.appendToBody) {
+          $chart.appendChild($toolTip);
+        } else {
+          document.body.appendChild($toolTip);
+        }
       }
       var height = $toolTip.offsetHeight;
       var width = $toolTip.offsetWidth;
@@ -111,8 +116,13 @@
         // see https://github.com/gionkunz/chartist-js/issues/381
         height = height || $toolTip.offsetHeight;
         width = width || $toolTip.offsetWidth;
-        $toolTip.style.top = (event.layerY || event.offsetY) - height + options.tooltipOffset.y + 'px';
-        $toolTip.style.left = (event.layerX || event.offsetX) - width / 2 + options.tooltipOffset.x + 'px';
+        if (!options.appendToBody) {
+          $toolTip.style.top = (event.layerY || event.offsetY) - height + options.tooltipOffset.y + 'px';
+          $toolTip.style.left = (event.layerX || event.offsetX) - width / 2 + options.tooltipOffset.x + 'px';
+        } else {
+          $toolTip.style.top = event.pageY - height  + options.tooltipOffset.y + 'px';
+          $toolTip.style.left = event.pageX - width / 2 + options.tooltipOffset.x + 'px';
+        }
       }
     }
   };
