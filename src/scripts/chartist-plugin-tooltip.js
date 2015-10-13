@@ -26,7 +26,6 @@
 
   Chartist.plugins = Chartist.plugins || {};
   Chartist.plugins.tooltip = function (options) {
-    console.log(options);
     options = Chartist.extend({}, defaultOptions, options);
 
     return function tooltip(chart) {
