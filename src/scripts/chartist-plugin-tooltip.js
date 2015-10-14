@@ -11,7 +11,9 @@
     tooltipOffset: {
       x: 0,
       y: -20
-    }
+    },
+    appendToBody: false,
+    class: undefined
     // showTooltips: true,
     // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
     // labelClass: 'ct-label',
@@ -24,7 +26,6 @@
 
   Chartist.plugins = Chartist.plugins || {};
   Chartist.plugins.tooltip = function (options) {
-
     options = Chartist.extend({}, defaultOptions, options);
 
     return function tooltip(chart) {
@@ -44,8 +45,12 @@
       var $toolTip = $chart.querySelector('.chartist-tooltip');
       if (!$toolTip) {
         $toolTip = document.createElement('div');
-        $toolTip.className = 'chartist-tooltip';
-        $chart.appendChild($toolTip);
+        $toolTip.className = (!options.class) ? 'chartist-tooltip' : 'chartist-tooltip ' + options.class;
+        if (!options.appendToBody) {
+          $chart.appendChild($toolTip);
+        } else {
+          document.body.appendChild($toolTip);
+        }
       }
       var height = $toolTip.offsetHeight;
       var width = $toolTip.offsetWidth;
@@ -63,12 +68,16 @@
         var $point = event.target;
         var tooltipText = '';
 
-        var meta = ('<span class="chartist-tooltip-meta">'+$point.getAttribute('ct:meta')+'</span>') || '';
-        var value = '<span class="chartist-tooltip-value">'+$point.getAttribute('ct:value')+'</span>';
+        var meta = $point.getAttribute('ct:meta') || '';
+        var value = $point.getAttribute('ct:value');
 
         if (options.tooltipFnc) {
           tooltipText = options.tooltipFnc(meta, value);
         } else {
+
+          meta = '<span class="chartist-tooltip-meta">' + meta + '</span>';
+          value = '<span class="chartist-tooltip-value">' + value + '</span>';
+
           if (meta) {
             tooltipText += meta + '<br>';
           } else {
@@ -111,18 +120,23 @@
         // see https://github.com/gionkunz/chartist-js/issues/381
         height = height || $toolTip.offsetHeight;
         width = width || $toolTip.offsetWidth;
-        $toolTip.style.top = (event.layerY || event.offsetY) - height + options.tooltipOffset.y + 'px';
-        $toolTip.style.left = (event.layerX || event.offsetX) - width / 2 + options.tooltipOffset.x + 'px';
+        if (!options.appendToBody) {
+          $toolTip.style.top = (event.layerY || event.offsetY) - height + options.tooltipOffset.y + 'px';
+          $toolTip.style.left = (event.layerX || event.offsetX) - width / 2 + options.tooltipOffset.x + 'px';
+        } else {
+          $toolTip.style.top = event.pageY - height  + options.tooltipOffset.y + 'px';
+          $toolTip.style.left = event.pageX - width / 2 + options.tooltipOffset.x + 'px';
+        }
       }
     }
   };
 
   function show(element) {
-    element.style.display = 'block';
+    element.classList.add('tooltip-show');
   }
 
   function hide(element) {
-    element.style.display = 'none';
+    element.classList.remove('tooltip-show');
   }
 
   function hasClass(element, className) {
