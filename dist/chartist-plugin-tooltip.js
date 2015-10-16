@@ -1,18 +1,18 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define([], function () {
-      return (root.returnExportsGlobal = factory());
+    define(["chartist"], function (Chartist) {
+      return (root.returnExportsGlobal = factory(Chartist));
     });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like enviroments that support module.exports,
     // like Node.
-    module.exports = factory();
+    module.exports = factory(require("chartist"));
   } else {
-    root['Chartist.plugins.tooltips'] = factory();
+    root['Chartist.plugins.tooltips'] = factory(Chartist);
   }
-}(this, function () {
+}(this, function (Chartist) {
 
   /**
    * Chartist.js plugin to display a data label on top of the points in a line chart.
