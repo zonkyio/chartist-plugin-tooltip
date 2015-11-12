@@ -84,7 +84,9 @@
           var $point = event.target;
           var tooltipText = '';
 
-          var meta = $point.getAttribute('ct:meta') || '';
+          var seriesName = ($point.parentNode) ? $point.parentNode.getAttribute('ct:series-name') : '';
+          var meta = $point.getAttribute('ct:meta') || seriesName || '';
+          var hasMeta = !!meta;
           var value = $point.getAttribute('ct:value');
 
           if (options.tooltipFnc) {
@@ -94,7 +96,7 @@
             meta = '<span class="chartist-tooltip-meta">' + meta + '</span>';
             value = '<span class="chartist-tooltip-value">' + value + '</span>';
 
-            if (meta) {
+            if (hasMeta) {
               tooltipText += meta + '<br>';
             } else {
               // For Pie Charts also take the labels into account
