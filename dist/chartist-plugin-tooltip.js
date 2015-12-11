@@ -84,7 +84,7 @@
           var $point = event.target;
           var tooltipText = '';
 
-          var meta = $point.getAttribute('ct:meta') || '';
+          var meta = $point.getAttribute('ct:meta') || $point.parentNode.getAttribute('ct:meta') || $point.parentNode.getAttribute('ct:series-name') || '';
           var value = $point.getAttribute('ct:value');
 
           if (options.tooltipFnc) {
