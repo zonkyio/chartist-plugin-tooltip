@@ -84,7 +84,8 @@
           var $point = event.target;
           var tooltipText = '';
 
-          var seriesName = ($point.parentNode) ? $point.parentNode.getAttribute('ct:series-name') : '';
+          var seriesName = ($point.parentNode) ? $point.parentNode.getAttribute('ct:meta') || 
+              $point.parentNode.getAttribute('ct:series-name') : '';
           var meta = $point.getAttribute('ct:meta') || seriesName || '';
           var hasMeta = !!meta;
           var value = $point.getAttribute('ct:value');
