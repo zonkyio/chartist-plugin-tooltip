@@ -77,7 +77,12 @@
         if (options.tooltipFnc) {
           tooltipText = options.tooltipFnc(meta, value);
         } else {
-
+          if(options.metaIsHTML){
+            var txt = document.createElement("textarea");
+            txt.innerHTML = meta;
+            meta = txt.value;
+          }
+          
           meta = '<span class="chartist-tooltip-meta">' + meta + '</span>';
           value = '<span class="chartist-tooltip-value">' + value + '</span>';
 
