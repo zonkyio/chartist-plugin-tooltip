@@ -100,13 +100,15 @@
           tooltipText += value;
         }
 
-        $toolTip.innerHTML = tooltipText;
-        setPosition(event);
-        show($toolTip);
+        if(tooltipText) {
+          $toolTip.innerHTML = tooltipText;
+          setPosition(event);
+          show($toolTip);
 
-        // Remember height and width to avoid wrong position in IE
-        height = $toolTip.offsetHeight;
-        width = $toolTip.offsetWidth;
+          // Remember height and width to avoid wrong position in IE
+          height = $toolTip.offsetHeight;
+          width = $toolTip.offsetWidth;
+        }
       });
 
       on('mouseout', tooltipSelector, function () {
