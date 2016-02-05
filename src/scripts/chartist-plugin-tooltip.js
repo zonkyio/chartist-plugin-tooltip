@@ -68,8 +68,8 @@
         var $point = event.target;
         var tooltipText = '';
 
-        var seriesName = ($point.parentNode) ? $point.parentNode.getAttribute('ct:meta') || 
-            $point.parentNode.getAttribute('ct:series-name') : '';
+        var isPieChart = (chart instanceof Chartist.Pie) ? $point : $point.parentNode;
+        var seriesName = (isPieChart) ? $point.parentNode.getAttribute('ct:meta') || $point.parentNode.getAttribute('ct:series-name') : '';
         var meta = $point.getAttribute('ct:meta') || seriesName || '';
         var hasMeta = !!meta;
         var value = $point.getAttribute('ct:value');
@@ -93,7 +93,7 @@
             // Could add support for more charts here as well!
             if (chart instanceof Chartist.Pie) {
               var label = next($point, 'ct-label');
-              if (label.length > 0) {
+              if (label) {
                 tooltipText += text(label) + '<br>';
               }
             }
