@@ -79,7 +79,6 @@
         } else {
 
           meta = '<span class="chartist-tooltip-meta">' + meta + '</span>';
-          value = '<span class="chartist-tooltip-value">' + value + '</span>';
 
           if (hasMeta) {
             tooltipText += meta + '<br>';
@@ -94,10 +93,13 @@
             }
           }
 
-          if (options.currency) {
-            value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+          if (value) {
+            value = '<span class="chartist-tooltip-value">' + value + '</span>';
+            if (options.currency) {
+              value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+            }
+            tooltipText += value;
           }
-          tooltipText += value;
         }
 
         $toolTip.innerHTML = tooltipText;
