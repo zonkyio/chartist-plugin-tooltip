@@ -99,10 +99,10 @@
           }
 
           if (value) {
-            value = '<span class="chartist-tooltip-value">' + value + '</span>';
             if (options.currency) {
               value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
             }
+            value = '<span class="chartist-tooltip-value">' + value + '</span>';
             tooltipText += value;
           }
         }
