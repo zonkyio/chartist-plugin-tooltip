@@ -84,8 +84,8 @@
           var $point = event.target;
           var tooltipText = '';
 
-          var seriesName = ($point.parentNode) ? $point.parentNode.getAttribute('ct:meta') || 
-              $point.parentNode.getAttribute('ct:series-name') : '';
+          var isPieChart = (chart instanceof Chartist.Pie) ? $point : $point.parentNode;
+          var seriesName = (isPieChart) ? $point.parentNode.getAttribute('ct:meta') || $point.parentNode.getAttribute('ct:series-name') : '';
           var meta = $point.getAttribute('ct:meta') || seriesName || '';
           var hasMeta = !!meta;
           var value = $point.getAttribute('ct:value');
@@ -93,9 +93,13 @@
           if (options.tooltipFnc) {
             tooltipText = options.tooltipFnc(meta, value);
           } else {
+            if(options.metaIsHTML){
+              var txt = document.createElement("textarea");
+              txt.innerHTML = meta;
+              meta = txt.value;
+            }
 
             meta = '<span class="chartist-tooltip-meta">' + meta + '</span>';
-            value = '<span class="chartist-tooltip-value">' + value + '</span>';
 
             if (hasMeta) {
               tooltipText += meta + '<br>';
@@ -104,16 +108,19 @@
               // Could add support for more charts here as well!
               if (chart instanceof Chartist.Pie) {
                 var label = next($point, 'ct-label');
-                if (label.length > 0) {
+                if (label) {
                   tooltipText += text(label) + '<br>';
                 }
               }
             }
 
-            if (options.currency) {
-              value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+            if (value) {
+              value = '<span class="chartist-tooltip-value">' + value + '</span>';
+              if (options.currency) {
+                value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+              }
+              tooltipText += value;
             }
-            tooltipText += value;
           }
 
           if(tooltipText) {
@@ -153,11 +160,14 @@
     };
 
     function show(element) {
-      element.classList.add('tooltip-show');
+      if(!hasClass(element, 'tooltip-show')) {
+        element.className = element.className + ' tooltip-show';
+      }
     }
 
     function hide(element) {
-      element.classList.remove('tooltip-show');
+      var regex = new RegExp('tooltip-show' + '\\s*', 'gi');
+      element.className = element.className.replace(regex, '').trim();
     }
 
     function hasClass(element, className) {
