@@ -82,7 +82,7 @@
             txt.innerHTML = meta;
             meta = txt.value;
           }
-          
+
           meta = '<span class="chartist-tooltip-meta">' + meta + '</span>';
 
           if (hasMeta) {
@@ -144,11 +144,14 @@
   };
 
   function show(element) {
-    element.classList.add('tooltip-show');
+    if(!hasClass(element, 'tooltip-show')) {
+      element.className = element.className + ' tooltip-show';
+    }
   }
 
   function hide(element) {
-    element.classList.remove('tooltip-show');
+    var regex = new RegExp('tooltip-show' + '\\s*', 'gi');
+    element.className = element.className.replace(regex, '').trim();
   }
 
   function hasClass(element, className) {
