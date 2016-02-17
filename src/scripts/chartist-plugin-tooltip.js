@@ -13,7 +13,8 @@
       y: -20
     },
     appendToBody: false,
-    class: undefined
+    class: undefined,
+    pointClass: 'ct-point'
     // showTooltips: true,
     // tooltipEvents: ['mousemove', 'touchstart', 'touchmove'],
     // labelClass: 'ct-label',
@@ -29,7 +30,7 @@
     options = Chartist.extend({}, defaultOptions, options);
 
     return function tooltip(chart) {
-      var tooltipSelector = 'ct-point';
+      var tooltipSelector = options.pointClass;
       if (chart instanceof Chartist.Bar) {
         tooltipSelector = 'ct-bar';
       } else if (chart instanceof Chartist.Pie) {
