@@ -86,3 +86,50 @@ var chart = new Chartist.Line('.ct-chart', {
     })
   ]
 });
+```
+
+
+
+## Custom point element.
+
+In ChartistJS you can replace default element with smth different.
+There is a pretty [demo](https://gionkunz.github.io/chartist-js/examples.html) (*USING EVENTS TO REPLACE GRAPHICS*).
+And if you want the tooltip to work fine with a new element, you need to include two more properties:
+
+```javascript
+'ct:value': data.value.y,
+'ct:meta': data.meta,
+```
+
+So the final code could look like this. Here is a [live demo](https://jsfiddle.net/AlexanderKozhevin/aapycL87/)
+```javascript
+chart.on('draw', function(data) {
+  // If the draw event was triggered from drawing a point on the line chart
+  if(data.type === 'point') {
+    // We are creating a new path SVG element that draws a triangle around the point coordinates
+
+    var circle = new Chartist.Svg('circle', {
+      cx: [data.x],
+      cy: [data.y],
+      r: [5],
+      'ct:value': data.value.y,
+      'ct:meta': data.meta,
+      class: 'my-cool-point',
+    }, 'ct-area');
+
+    // With data.element we get the Chartist SVG wrapper and we can replace the original point drawn by Chartist with our newly created triangle
+    data.element.replace(circle);
+  }
+});
+```
+
+```javascript
+plugins: [
+      Chartist.plugins.tooltip({
+        appendToBody: true,
+        pointClass: 'my-cool-point'
+      })
+
+    ]
+
+```
