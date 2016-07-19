@@ -1,12 +1,12 @@
 {
-  "name": "chartist-plugin-tooltip",
+  "name": "chartist-plugin-tooltips",
   "description": "Point Labels Plugin for Chartist.js",
   "version": "0.0.12",
   "author": "Markus Padourek",
   "homepage": "https://github.com/Globegitter/chartist-plugin-tooltip",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Globegitter/chartist-plugin-tooltip.git"
+    "url": "git+https://github.com/Globegitter/chartist-plugin-tooltip.git"
   },
   "bugs": {
     "url": "https://github.com/Globegitter/chartist-plugin-tooltip/issues"
@@ -59,5 +59,9 @@
     "dist": "dist",
     "tmp": ".tmp",
     "test": "test"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "license": "MIT"
 }
