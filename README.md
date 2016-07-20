@@ -4,6 +4,8 @@ This plugin provides quick and easy tooltips for your chartist charts. Touch sup
 
 Please visit http://gionkunz.github.io/chartist-js/plugins.html for more information.
 
+NPM package: https://www.npmjs.com/package/chartist-plugin-tooltips
+
 ## Available options and their defaults
 
 ```javascript
