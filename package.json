@@ -58,7 +58,8 @@
     "src": "src",
     "dist": "dist",
     "tmp": ".tmp",
-    "test": "test"
+    "test": "test",
+    "src_name": "chartist-plugin-tooltip"
   },
   "directories": {
     "test": "test"
