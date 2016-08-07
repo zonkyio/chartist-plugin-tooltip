@@ -28,6 +28,7 @@
         x: 0,
         y: -20
       },
+      anchorToPoint: false,
       appendToBody: false,
       class: undefined,
       pointClass: 'ct-point'
@@ -91,7 +92,7 @@
             tooltipText = options.tooltipFnc(meta, value);
           } else {
             if (options.metaIsHTML) {
-              var txt = document.createElement("textarea");
+              var txt = document.createElement('textarea');
               txt.innerHTML = meta;
               meta = txt.value;
             }
@@ -113,7 +114,7 @@
 
             if (value) {
               if (options.currency) {
-                value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,");
+                value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
               }
               value = '<span class="chartist-tooltip-value">' + value + '</span>';
               tooltipText += value;
@@ -136,21 +137,32 @@
         });
 
         on('mousemove', null, function (event) {
-          setPosition(event);
+          if (false === options.anchorToPoint)
+            setPosition(event);
         });
 
         function setPosition(event) {
-          // For some reasons, on FF, we can't rely on event.offsetX and event.offsetY,
-          // that's why we prioritize event.layerX and event.layerY
-          // see https://github.com/gionkunz/chartist-js/issues/381
           height = height || $toolTip.offsetHeight;
           width = width || $toolTip.offsetWidth;
+          var offsetX = - width / 2 + options.tooltipOffset.x
+          var offsetY = - height + options.tooltipOffset.y;
+          var anchorX, anchorY;
+
           if (!options.appendToBody) {
-            $toolTip.style.top = (event.layerY || event.offsetY) - height + options.tooltipOffset.y + 'px';
-            $toolTip.style.left = (event.layerX || event.offsetX) - width / 2 + options.tooltipOffset.x + 'px';
+            var box = $chart.getBoundingClientRect();
+            var left = event.pageX - box.left - window.pageXOffset ;
+            var top = event.pageY - box.top - window.pageYOffset ;
+
+            if (true === options.anchorToPoint && event.target.x2 && event.target.y2) {
+              anchorX = parseInt(event.target.x2.baseVal.value);
+              anchorY = parseInt(event.target.y2.baseVal.value);
+            }
+
+            $toolTip.style.top = (anchorY || top) + offsetY + 'px';
+            $toolTip.style.left = (anchorX || left) + offsetX + 'px';
           } else {
-            $toolTip.style.top = event.pageY - height  + options.tooltipOffset.y + 'px';
-            $toolTip.style.left = event.pageX - width / 2 + options.tooltipOffset.x + 'px';
+            $toolTip.style.top = event.pageY + offsetY + 'px';
+            $toolTip.style.left = event.pageX + offsetX + 'px';
           }
         }
       }
