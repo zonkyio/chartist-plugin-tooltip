@@ -8,6 +8,7 @@
 
   var defaultOptions = {
     currency: undefined,
+    currencyFormatCallback: undefined,
     tooltipOffset: {
       x: 0,
       y: -20
@@ -98,7 +99,11 @@
 
           if (value) {
             if (options.currency) {
-              value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
+              if (options.currencyFormatCallback != undefined) {
+                value = options.currencyFormatCallback(value, options);
+              } else {
+                value = options.currency + value.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
+              }
             }
             value = '<span class="chartist-tooltip-value">' + value + '</span>';
             tooltipText += value;
@@ -131,7 +136,7 @@
         var offsetX = - width / 2 + options.tooltipOffset.x
         var offsetY = - height + options.tooltipOffset.y;
         var anchorX, anchorY;
-        
+
         if (!options.appendToBody) {
           var box = $chart.getBoundingClientRect();
           var left = event.pageX - box.left - window.pageXOffset ;
