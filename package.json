@@ -51,7 +51,9 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "preversion": "grunt test",
+    "version": "grunt build && git add -A ."
   },
   "config": {
     "banner": "/* chartist-plugin-tooltip <%= pkg.version %>\n * Copyright © <%= year %> Markus Padourek\n * Free to use under the WTFPL license.\n * http://www.wtfpl.net/\n */\n",
