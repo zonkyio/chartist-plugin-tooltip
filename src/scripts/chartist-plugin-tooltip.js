@@ -1,7 +1,7 @@
 /**
- * Chartist.js plugin to display a data label on top of the points in a line chart.
- *
- */
+* Chartist.js plugin to display a data label on top of the points in a line chart.
+*
+*/
 /* global Chartist */
 (function (window, document, Chartist) {
   'use strict';
@@ -24,10 +24,10 @@
     options = Chartist.extend({}, defaultOptions, options);
 
     return function tooltip(chart) {
-			var tooltipSelector = options.pointClass;
-			if (chart.constructor.name == Chartist.Bar.prototype.constructor.name) {
-				tooltipSelector = 'ct-bar';
-			} else if (chart.constructor.name ==  Chartist.Pie.prototype.constructor.name) {
+      var tooltipSelector = options.pointClass;
+      if (chart.constructor.name == Chartist.Bar.prototype.constructor.name) {
+        tooltipSelector = 'ct-bar';
+      } else if (chart.constructor.name ==  Chartist.Pie.prototype.constructor.name) {
         // Added support for donut graph
         if (chart.options.donut) {
           tooltipSelector = 'ct-slice-donut';
@@ -55,7 +55,7 @@
       function on(event, selector, callback) {
         $chart.addEventListener(event, function (e) {
           if (!selector || hasClass(e.target, selector))
-            callback(e);
+          callback(e);
         });
       }
 
@@ -127,7 +127,7 @@
 
       on('mousemove', null, function (event) {
         if (false === options.anchorToPoint)
-          setPosition(event);
+        setPosition(event);
       });
 
       function setPosition(event) {
