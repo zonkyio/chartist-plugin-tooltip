@@ -24,10 +24,10 @@
     options = Chartist.extend({}, defaultOptions, options);
 
     return function tooltip(chart) {
-      var tooltipSelector = options.pointClass;
-      if (chart instanceof Chartist.Bar) {
-        tooltipSelector = 'ct-bar';
-      } else if (chart instanceof Chartist.Pie) {
+			var tooltipSelector = options.pointClass;
+			if (chart.constructor.name == Chartist.Bar.prototype.constructor.name) {
+				tooltipSelector = 'ct-bar';
+			} else if (chart.constructor.name ==  Chartist.Pie.prototype.constructor.name) {
         // Added support for donut graph
         if (chart.options.donut) {
           tooltipSelector = 'ct-slice-donut';
