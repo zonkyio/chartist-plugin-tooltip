@@ -25,9 +25,9 @@
 
     return function tooltip(chart) {
       var tooltipSelector = options.pointClass;
-      if (chart.constructor.name == Chartist.Bar.prototype.constructor.name) {
+      if (chart.constructor.toString() == Chartist.Bar.prototype.constructor.toString()) {
         tooltipSelector = 'ct-bar';
-      } else if (chart.constructor.name ==  Chartist.Pie.prototype.constructor.name) {
+      } else if (chart.constructor.toString() ==  Chartist.Pie.prototype.constructor.toString()) {
         // Added support for donut graph
         if (chart.options.donut) {
           tooltipSelector = 'ct-slice-donut';
